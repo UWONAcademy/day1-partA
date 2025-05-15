@@ -154,6 +154,23 @@
     #start-button:hover {
       background: linear-gradient(to right, #2563eb, #2c7a7b);
     }
+  
+      /* 防止整个页面横向滚动 */
+    body {
+      overflow-x: hidden;
+    }
+
+    /* 包裹表格的容器，支持横向滚动 */
+    .table-wrapper {
+      overflow-x: auto;
+      width: 100%;
+    }
+
+    /* 设置表格的最小宽度，防止内容太挤 */
+    .table-wrapper table {
+      min-width: 640px;
+    }  
+
   </style>
 </head>
 <body>
@@ -162,7 +179,7 @@
     <div id="test-view">
       <h1 class="main-title">
         UWON Academy Listening Vocabulary Test
-        <small>Day 10 Part A</small>
+        <small>Day 1 Part A</small>
       </h1>
 
       <div><strong>Time：</strong><span id="timer">0</span> second</div>
@@ -181,7 +198,7 @@
     <div id="report-view" class="hidden">
       <h2 class="report-title">
         📊 UWON Academy Listening Vocabulary Test Report
-        <small>Day 10 Part A</small>
+        <small>Day 1 Part A</small>
       </h2>
       <p id="report-time"></p>
       <div id="report-table"></div>
@@ -339,19 +356,21 @@
       }).join('');
 
       reportTable.innerHTML = `
-        <table>
-          <thead>
-            <tr>
-              <th>单词</th>
-              <th>错误拼写</th>
-              <th>正确拼写</th>
-              <th>中文意思</th>
-              <th>词性</th>
-              <th>错误类型</th>
-            </tr>
-          </thead>
-          <tbody>${rows}</tbody>
-        </table>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>单词</th>
+                <th>错误拼写</th>
+                <th>正确拼写</th>
+                <th>中文意思</th>
+                <th>词性</th>
+                <th>错误类型</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
       `;
     }
 
