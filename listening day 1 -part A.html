@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UWON Academy Listening Vocabulary Test - Day 1 Part A</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #f0fdf4);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: start;
+      padding: 40px 20px;
+      color: #073b4c;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      max-width: 720px;
+      width: 100%;
+      border-top: 6px solid #38b2ac;
+    }
+
+    h1.main-title {
+      font-weight: 700;
+      text-align: center;
+      color: #134e4a;
+      line-height: 1.4;
+      word-break: break-word;
+      font-size: 7vw;
+      margin-bottom: 10px;
+    }
+
+    h1.main-title small {
+      display: block;
+      font-weight: 600;
+      font-size: 5vw;
+      color: #38b2ac;
+      margin-top: 5px;
+    }
+
+    h2.report-title {
+      text-align: center;
+      color: #134e4a;
+      font-size: 5vw;
+      font-weight: 700;
+      margin-bottom: 20px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    h2.report-title small {
+      display: block;
+      font-size: 4.2vw;
+      color: #38b2ac;
+      font-weight: 600;
+      margin-top: 5px;
+    }
+
+    @media (min-width: 768px) {
+      h1.main-title {
+        font-size: 32px;
+      }
+      h1.main-title small {
+        font-size: 20px;
+      }
+      h2.report-title {
+        font-size: 28px;
+      }
+      h2.report-title small {
+        font-size: 18px;
+      }
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin-top: 10px;
+      border: 1px solid #cbd5e0;
+      border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-top: 15px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      background-color: #38b2ac;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #2c7a7b;
+    }
+
+    .error-feedback {
+      margin-top: 12px;
+      color: #d64545;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    th, td {
+      border: 1px solid #e2e8f0;
+      padding: 10px;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    th {
+      background-color: #38b2ac;
+      color: white;
+    }
+
+    select {
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e0;
+      background-color: white;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #start-button {
+      background: linear-gradient(to right, #3b82f6, #38b2ac);
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    #start-button:hover {
+      background: linear-gradient(to right, #2563eb, #2c7a7b);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div id="test-view">
+      <h1 class="main-title">
+        UWON Academy Listening Vocabulary Test
+        <small>Day 10 Part A</small>
+      </h1>
+
+      <div><strong>Time：</strong><span id="timer">0</span> second</div>
+
+      <div id="start-section">
+        <button id="start-button">Start</button>
+      </div>
+
+      <div id="test-section" class="hidden">
+        <input type="text" id="user-input" placeholder="请听后输入单词" autocomplete="off" />
+        <button id="submit-button">提交</button>
+        <div id="feedback" class="error-feedback"></div>
+      </div>
+    </div>
+
+    <div id="report-view" class="hidden">
+      <h2 class="report-title">
+        📊 UWON Academy Listening Vocabulary Test Report
+        <small>Day 10 Part A</small>
+      </h2>
+      <p id="report-time"></p>
+      <div id="report-table"></div>
+    </div>
+  </div>
+
+  <script>
+    const words = [
+{ word: "copy", meaning: "副本；复制", partOfSpeech: "n" },
+        { word: "service", meaning: "服务；服务业", partOfSpeech: "n" },
+        { word: "ideas", meaning: "想法；主意", partOfSpeech: "n" },
+        { word: "clock", meaning: "时钟；钟表", partOfSpeech: "n" },
+        { word: "exams", meaning: "考试（复数）", partOfSpeech: "n" },
+        { word: "world", meaning: "世界", partOfSpeech: "n" },
+        { word: "letter", meaning: "信件；字母", partOfSpeech: "n" },
+        { word: "failure", meaning: "失败；故障", partOfSpeech: "n" },
+        { word: "coffee", meaning: "咖啡", partOfSpeech: "n" },
+        { word: "ticket", meaning: "票；罚单", partOfSpeech: "n" },
+        { word: "demonstration", meaning: "示范；游行示威", partOfSpeech: "n" },
+        { word: "Third", meaning: "第三的", partOfSpeech: "adj" },
+        { word: "transportation", meaning: "交通运输", partOfSpeech: "n" },
+        { word: "festival", meaning: "节日；庆典", partOfSpeech: "n" },
+        { word: "Fourth", meaning: "第四的", partOfSpeech: "adj" },
+        { word: "goals", meaning: "目标；进球（复数）", partOfSpeech: "n" },
+        { word: "Belfast", meaning: "贝尔法斯特（北爱尔兰首府）", partOfSpeech: "n" },
+        { word: "cause", meaning: "原因；引起", partOfSpeech: "n/v" },
+        { word: "energy", meaning: "能量；精力", partOfSpeech: "n" },
+        { word: "Ireland", meaning: "爱尔兰", partOfSpeech: "n" },
+        { word: "social", meaning: "社会的；社交的", partOfSpeech: "adj" },
+        { word: "experience", meaning: "经历；经验", partOfSpeech: "n/v" },
+        { word: "Dublin", meaning: "都柏林（爱尔兰首都）", partOfSpeech: "n" },
+        { word: "session", meaning: "会议；一段时间", partOfSpeech: "n" },
+        { word: "January", meaning: "一月", partOfSpeech: "n" },
+        { word: "Australia", meaning: "澳大利亚", partOfSpeech: "n" },
+        { word: "female", meaning: "女性；雌性", partOfSpeech: "adj/n" },
+        { word: "Second", meaning: "第二的", partOfSpeech: "adj" },
+        { word: "narrator", meaning: "叙述者；旁白", partOfSpeech: "n" },
+        { word: "station", meaning: "车站；电台", partOfSpeech: "n" },
+        { word: "America", meaning: "美国", partOfSpeech: "n" },
+        { word: "costs", meaning: "费用；成本（复数）", partOfSpeech: "n" },
+        { word: "kitchen", meaning: "厨房", partOfSpeech: "n" },
+        { word: "Britain", meaning: "英国", partOfSpeech: "n" },
+        { word: "background", meaning: "背景；经历", partOfSpeech: "n" },
+        { word: "club", meaning: "俱乐部", partOfSpeech: "n" },
+        { word: "London", meaning: "伦敦", partOfSpeech: "n" },
+        { word: "kindergarten", meaning: "幼儿园", partOfSpeech: "n" },
+        { word: "Avenue", meaning: "大道；街道", partOfSpeech: "n" },
+        { word: "American", meaning: "美国的；美国人", partOfSpeech: "adj/n" },
+        { word: "England", meaning: "英格兰", partOfSpeech: "n" },
+        { word: "senior", meaning: "年长的；高级的", partOfSpeech: "adj" },
+        { word: "March", meaning: "三月；行进", partOfSpeech: "n/v" },
+        { word: "Scotland", meaning: "苏格兰", partOfSpeech: "n" },
+        { word: "deposit", meaning: "押金；存款", partOfSpeech: "n" },
+        { word: "Queensland", meaning: "昆士兰（澳洲州名）", partOfSpeech: "n" },
+        { word: "extra", meaning: "额外的；附加的", partOfSpeech: "adj" },
+        { word: "New Zealand", meaning: "新西兰", partOfSpeech: "n" },
+        { word: "Sydney", meaning: "悉尼", partOfSpeech: "n" },
+        { word: "tape", meaning: "磁带；胶带", partOfSpeech: "n" },
+        { word: "Cambridge", meaning: "剑桥", partOfSpeech: "n" },
+        { word: "Adelaide", meaning: "阿德莱德", partOfSpeech: "n" },
+        { word: "title", meaning: "标题；职称", partOfSpeech: "n" },
+        { word: "media", meaning: "媒体", partOfSpeech: "n" },
+        { word: "Melbourne", meaning: "墨尔本", partOfSpeech: "n" },
+        { word: "culture", meaning: "文化", partOfSpeech: "n" },
+        { word: "Scottish", meaning: "苏格兰的", partOfSpeech: "adj" },
+        { word: "Perth", meaning: "珀斯（澳洲城市）", partOfSpeech: "n" },
+        { word: "dark", meaning: "黑暗的；深色的", partOfSpeech: "adj" },
+        { word: "weekend", meaning: "周末", partOfSpeech: "n" },
+        { word: "fire", meaning: "火；火灾", partOfSpeech: "n" }
+    ];
+
+    const errorOptions = ["不认识单词", "辨音问题", "拼写错误", "不认识中文"];
+    let currentIndex = 0;
+    let startTime = null;
+    let interval = null;
+    let errors = [];
+    let currentWord = null;
+
+    const timerEl = document.getElementById('timer');
+    const inputEl = document.getElementById('user-input');
+    const submitBtn = document.getElementById('submit-button');
+    const feedbackEl = document.getElementById('feedback');
+
+    const testView = document.getElementById('test-view');
+    const startSection = document.getElementById('start-section');
+    const testSection = document.getElementById('test-section');
+    const reportView = document.getElementById('report-view');
+    const reportTime = document.getElementById('report-time');
+    const reportTable = document.getElementById('report-table');
+    const startBtn = document.getElementById('start-button');
+
+    function startTimer() {
+      startTime = Date.now();
+      interval = setInterval(() => {
+        timerEl.textContent = Math.floor((Date.now() - startTime) / 1000);
+      }, 1000);
+    }
+
+    function speakWord(word) {
+      speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(word);
+      utterance.lang = 'en-US';
+      speechSynthesis.speak(utterance);
+    }
+
+    function loadWord() {
+      currentWord = words[currentIndex];
+      inputEl.value = '';
+      feedbackEl.textContent = '';
+      inputEl.disabled = false;
+      inputEl.focus();
+      speakWord(currentWord.word);
+    }
+
+    function showFeedback(isCorrect) {
+      const correctText = `意思：${currentWord.partOfSpeech}，${currentWord.meaning}`;
+      if (isCorrect) {
+        feedbackEl.innerHTML = `✅ 正确！<br>${correctText}`;
+      } else {
+        feedbackEl.innerHTML = `❌ 正确拼写是：<strong>${currentWord.word}</strong><br>${correctText}`;
+      }
+    }
+
+    function showReportPage() {
+      clearInterval(interval);
+      const totalTime = Math.floor((Date.now() - startTime) / 1000);
+      testView.classList.add('hidden');
+      reportView.classList.remove('hidden');
+      reportTime.innerHTML = `<strong>总用时：</strong>${totalTime} 秒`;
+
+      if (errors.length === 0) {
+        reportTable.innerHTML = '<p>全部正确！太棒了！🎉</p>';
+        return;
+      }
+
+      const rows = errors.map((e, index) => {
+        const optionsHTML = errorOptions.map(opt => {
+          const selected = e.errorType === opt ? 'selected' : '';
+          return `<option value="${opt}" ${selected}>${opt}</option>`;
+        }).join('');
+        return `
+          <tr>
+            <td>${e.word}</td>
+            <td>${e.userInput || '（空）'}</td>
+            <td>${e.word}</td>
+            <td>${e.meaning}</td>
+            <td>${e.partOfSpeech}</td>
+            <td>
+              <select data-index="${index}" onchange="updateErrorType(event)">
+                ${optionsHTML}
+              </select>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      reportTable.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>单词</th>
+              <th>错误拼写</th>
+              <th>正确拼写</th>
+              <th>中文意思</th>
+              <th>词性</th>
+              <th>错误类型</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      `;
+    }
+
+    function updateErrorType(event) {
+      const index = event.target.getAttribute('data-index');
+      const newType = event.target.value;
+      errors[index].errorType = newType;
+    }
+
+    function submitAnswer() {
+      const userAnswer = inputEl.value.trim().toLowerCase();
+      inputEl.disabled = true;
+
+      const isCorrect = userAnswer === currentWord.word.toLowerCase();
+      showFeedback(isCorrect);
+
+      if (!isCorrect) {
+        errors.push({
+          ...currentWord,
+          userInput: userAnswer,
+          errorType: "拼写错误"
+        });
+      }
+
+      setTimeout(() => {
+        currentIndex++;
+        if (currentIndex < words.length) {
+          loadWord();
+        } else {
+          showReportPage();
+        }
+      }, isCorrect ? 1000 : 1500);
+    }
+
+    submitBtn.addEventListener('click', submitAnswer);
+    inputEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        submitAnswer();
+      }
+    });
+
+    startBtn.addEventListener('click', () => {
+      startSection.classList.add('hidden');
+      testSection.classList.remove('hidden');
+      currentIndex = 0;
+      errors = [];
+      startTimer();
+      setTimeout(() => {
+        loadWord();
+      }, 300);
+    });
+
+    window.updateErrorType = updateErrorType;
+  </script>
+</body>
+</html>
